@@ -18,20 +18,21 @@ class TrieNode {
   };
 };
 
-const Trie = function() {
-  this.root = new TrieNode(null);
-
+class Trie {
+  constructor() {
+    this.root = new TrieNode(null);
+  }
   // ADD A WORD
-  this.insert = function(word) {
+  insert(word) {
     let node = this.root;
-    for(let i = 0; i < word.length; i++) {
+    for (let i = 0; i < word.length; i++) {
       if (!node.children[word[i]]) {
         node.children[word[i]] = new TrieNode(word[i]);
         node.children[word[i]].parent = node;
       }
-  
+
       node = node.children[word[i]];
-  
+
       if (i === word.length - 1) {
         node.end = true;
       }
@@ -39,7 +40,7 @@ const Trie = function() {
   };
 
   // SEARCH FOR A WORD
-  this.wordSearch = function(word) {
+  wordSearch(word) {
     let node = this.root;
 
     for (let i = 0; i < word.length; i++) {
@@ -54,7 +55,7 @@ const Trie = function() {
   };
 
   // SEARCH FOR WORDS WITH A PREFIX
-  this.prefixSearch = function(prefix) {
+  prefixSearch(prefix) {
     let node = this.root;
     let output = [];
 
@@ -67,19 +68,19 @@ const Trie = function() {
     }
 
     // RECURSION
-    findWords(node, output);
-    
+    this.#findWords(node, output);
+
     return output;
   };
 
   // RECURSION HELPER FUNCTION TO FIND ALL WORDS
-  const findWords = (node, array) => {
+  #findWords(node, array) {
     if (node.end) {
       array.unshift(node.getWord());
     }
 
     for (let child in node.children) {
-      findWords(node.children[child], array);
+      this.#findWords(node.children[child], array);
     }
   };
 };
@@ -91,16 +92,30 @@ trie.insert("me");
 trie.insert("met");
 trie.insert("meow");
 trie.insert("mew");
-
 trie.insert("do");
 trie.insert("dog");
 trie.insert("dodge");
 trie.insert("doctor");
 
+const inputs = [
+  "me",
+  "met",
+  "meow",
+  "mew",
+  "do",
+  "dog",
+  "dodge",
+  "doctor",
+].map(str => trie.wordSearch(str))
+
+console.log(inputs)
+
+// console.log(trie);
+
 // WORD SEARCH OPERATIONS
-console.log(trie.wordSearch("dog"));
-console.log(trie.wordSearch("find"));
+// console.log(trie.wordSearch("dog"));
+// console.log(trie.wordSearch("find"));
 
 // PREFIX SEARCH OPERATIONS
-console.log(trie.prefixSearch("do"));
-console.log(trie.prefixSearch("me"));
+// console.log(trie.prefixSearch("do"));
+// console.log(trie.prefixSearch("me"));
