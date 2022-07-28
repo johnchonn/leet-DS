@@ -11,7 +11,7 @@ root index will always be 0.
 
 
 // MIN-HEAP (non-recursive)
-class MinHeap {
+class Heap {
   constructor() {
     this.trie = [];
     this.size = 0;
@@ -140,13 +140,13 @@ class MinHeap {
       if (this.trie[index] < this.trie[childIndex]) {
         this.moveNodes(index, childIndex);
       } else {
-        return;
+        return; 
       }
     }
   }
 }
 
-const heap = new MinHeap();
+const heap = new Heap();
 
 // INSERT OPERATIONS (1)
 heap.insertion(1);
