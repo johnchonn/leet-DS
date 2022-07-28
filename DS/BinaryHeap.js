@@ -10,7 +10,7 @@ root index will always be 0.
 */
 
 
-// MIN-HEAP (non-recursive)
+// BINARY HEAP (non-recursive)
 class Heap {
   constructor() {
     this.trie = [];
