@@ -18,45 +18,45 @@ class Heap {
   }
 
   // HELPER FUNCTIONS
-  parentIndex(index) {
+  #parentIndex(index) {
     return Math.floor((index - 1) / 2);
   }
 
-  leftChildIndex(index) {
+  #leftChildIndex(index) {
     return 2 * index + 1;
   }
 
-  rightChildIndex(index) {
+  #rightChildIndex(index) {
     return 2 * index + 2;
   }
 
-  parentPresent(index) {
-    return this.parentIndex(index) >= 0;
+  #parentPresent(index) {
+    return this.#parentIndex(index) >= 0;
   }
 
-  leftChildPresent(index) {
-    return this.leftChildIndex(index) < this.size;
+  #leftChildPresent(index) {
+    return this.#leftChildIndex(index) < this.size;
   }
 
-  rightChildPresent(index) {
-    return this.rightChildIndex(index) < this.size;
+  #rightChildPresent(index) {
+    return this.#rightChildIndex(index) < this.size;
   }
 
   // LOCATING OUR NODES
-  parent(index) {
-    return this.trie[this.parentIndex(index)];
+  #parent(index) {
+    return this.trie[this.#parentIndex(index)];
   }
 
-  leftChild(index) {
-    return this.trie[this.leftChildIndex(index)];
+  #leftChild(index) {
+    return this.trie[this.#leftChildIndex(index)];
   }
 
-  rightChild(index) {
-    return this.trie[this.rightChildIndex(index)];
+  #rightChild(index) {
+    return this.trie[this.#rightChildIndex(index)];
   }
 
   // REPOSITIONING OUR NODES
-  moveNodes(index1, index2) {
+  #moveNodes(index1, index2) {
     let current = this.trie[index1];
     this.trie[index1] = this.trie[index2];
     this.trie[index2] = current;
@@ -66,7 +66,7 @@ class Heap {
   insertion(data) {
     this.trie[this.size] = data;
     this.size += 1;
-    this.up();
+    this.#up();
   }
 
   // REMOVING A NODE (pop)
@@ -79,66 +79,66 @@ class Heap {
     this.trie[0] = this.trie[this.size - 1];
     this.trie.pop();
     this.size -= 1;
-    this.down();
+    this.#down();
 
     return data;
   }
 
   // MOVE NODES UPWARDS
   // min version
-  up() {
+  #up() {
     let index = this.size - 1;
 
-    while(this.parentPresent(index) && this.parent(index) > this.trie[index]) {
-      this.moveNodes(this.parentIndex(index), index);
-      index = this.parentIndex(index);
+    while(this.#parentPresent(index) && this.#parent(index) > this.trie[index]) {
+      this.#moveNodes(this.#parentIndex(index), index);
+      index = this.#parentIndex(index);
     }
   }
 
   // max version
-  up() {
+  #up() {
     let index = this.size - 1;
 
-    while(this.trie[index] > this.trie[this.parentIndex(index)]) {
-      this.moveNodes(index, this.parentIndex(index));
-      index = this.parentIndex(index);
+    while(this.trie[index] > this.trie[this.#parentIndex(index)]) {
+      this.#moveNodes(index, this.#parentIndex(index));
+      index = this.#parentIndex(index);
     }
   }
 
   // MOVE NODES DOWNWARDS
   // min version
-  down() {
+  #down() {
     let index = 0;
 
-    while(this.leftChildPresent(index)) {
-      let childIndex = this.leftChildIndex(index);
+    while(this.#leftChildPresent(index)) {
+      let childIndex = this.#leftChildIndex(index);
       
-      if (this.rightChildPresent(index) && this.rightChild(index) < this.leftChild(index)) {
-        childIndex = this.rightChildIndex(index);
+      if (this.#rightChildPresent(index) && this.#rightChild(index) < this.#leftChild(index)) {
+        childIndex = this.#rightChildIndex(index);
       }
 
       if (this.trie[index] < this.trie[childIndex]) {
         break;
       } else {
-        this.moveNodes(index, childIndex);
+        this.#moveNodes(index, childIndex);
         index = childIndex;
       }
     }
   }
 
   // max version
-  down() {
+  #down() {
     let index = 0;
 
-    while(this.trie[this.leftChildIndex(index)] !== undefined) {
-      let childIndex = this.leftChildIndex(index);
+    while(this.trie[this.#leftChildIndex(index)] !== undefined) {
+      let childIndex = this.#leftChildIndex(index);
 
-      if(this.trie[this.rightChildIndex(index)] !== undefined && this.trie[this.rightChildIndex(index)] > this.trie[this.leftChildIndex(index)]) {
-        childIndex = this.rightChildIndex(index);
+      if(this.trie[this.#rightChildIndex(index)] !== undefined && this.trie[this.#rightChildIndex(index)] > this.trie[this.#leftChildIndex(index)]) {
+        childIndex = this.#rightChildIndex(index);
       }
 
       if (this.trie[index] < this.trie[childIndex]) {
-        this.moveNodes(index, childIndex);
+        this.#moveNodes(index, childIndex);
       } else {
         return; 
       }
